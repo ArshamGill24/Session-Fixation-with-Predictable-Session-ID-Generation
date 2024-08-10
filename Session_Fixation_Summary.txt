@@ -1,0 +1,30 @@
+Project Title:
+          Creating a Session Fixation Issue with Predictable Session ID Generation
+
+Project Description:
+I developed a web application using Flask in PyCharm to demonstrate session fixation vulnerabilities with predictable
+session IDs. The application includes a login system and generates session IDs sequentially, incrementing by 3 each
+time. Using Burp Suite, I intercepted and modified HTTP requests to show how an attacker can fixate session IDs.
+Key steps include fixating session IDs using specific URLs, logging in as different users, and observing hijacked
+sessions. This project highlights the importance of secure session management and demonstrates how to exploit
+and mitigate session fixation attacks.
+
+Explanation :
+I used PyCharm as my development environment and intercepted and modified HTTP requests using Burp Suite. The session
+IDs increment predictably by +3, making them vulnerable to session fixation attacks (e.g., 12345, 12348, 12351).
+I navigated to specific URLs to fixate session IDs for different users:
+
+          Admin: http://127.0.0.1:5000/fixate_session?username=admin&session_id=12345
+          User1: http://127.0.0.1:5000/fixate_session?username=user1&session_id=12348
+          User2: http://127.0.0.1:5000/fixate_session?username=user2&session_id=12351
+
+I logged in as each user, intercepting the HTTP requests using Burp Suite. I modified the Cookie header in the
+intercepted request to set the session ID:
+          For admin: Cookie: session_id=12345
+          For user1: Cookie: session_id=12348
+          For user2: Cookie: session_id=12351
+
+After forwarding the requests, users were logged in with the specified session IDs. I verified successful session
+hijacking by navigating to the application’s main page and confirming the logged-in user and session ID.
+This effectively demonstrated the security flaw, highlighting the vulnerability of predictable session ID
+generation to session fixation attacks.
